@@ -1,0 +1,25 @@
+.container {
+  box-sizing: border-box;
+  height: 100vh;
+  width: 100vw;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.topBar {
+  padding: 5px;
+  display: flex;
+}
+
+.topBarButtons {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+.viewport {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}

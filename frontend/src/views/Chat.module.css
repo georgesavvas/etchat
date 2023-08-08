@@ -1,0 +1,58 @@
+.container {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 5px;
+}
+
+.postsList {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 5px;
+  position: relative;
+  overflow-y: scroll;
+  padding: 5px;
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+}
+
+.ownPost {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.postInfo {
+  display: flex;
+  gap: 5px;
+  padding: 5px;
+}
+
+.postContent {
+  background-color: rgb(46, 46, 102);
+  border-radius: 2px;
+  padding: 5px 10px;
+  width: max-content;
+}
+
+.ownPostContent {
+  background-color: rgb(42, 80, 38);
+  border-radius: 2px;
+  padding: 5px 10px;
+  width: max-content;
+}
+
+.editorContainer {
+  min-height: 72px;
+  max-height: 33%;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+}
