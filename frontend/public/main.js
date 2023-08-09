@@ -161,16 +161,16 @@ function createSplash () {
 
 const gotTheLock = app.requestSingleInstanceLock(sessionID);
 
-if (!gotTheLock) app.quit();
-else {
-  app.on("second-instance", () => {
-    if (window) {
-      if (window.isMinimized()) window.restore();
-      window.show();
-      window.focus();
-    }
-  });
-}
+// if (!gotTheLock) app.quit();
+// else {
+//   app.on("second-instance", () => {
+//     if (window) {
+//       if (window.isMinimized()) window.restore();
+//       window.show();
+//       window.focus();
+//     }
+//   });
+// }
 
 app.whenReady().then(async () => {
   splash = createSplash();

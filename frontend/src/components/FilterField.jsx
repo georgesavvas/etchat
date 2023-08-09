@@ -1,13 +1,10 @@
-import React from "react";
-
 import FormControl from "@mui/material/FormControl";
 import OutlinedInput from "@mui/material/OutlinedInput";
+import React from "react";
 import Typography from "@mui/material/Typography";
-
 import styles from "./FilterField.module.css";
 
-
-const FilterField = ({filterValue, setFilterValue, children}) => {
+const FilterField = ({filterValue, setFilterValue, label="Filter", children}) => {
   return (
     <div className={styles.filterBar}>
       <FormControl fullWidth focused={filterValue ? true : false}>
@@ -15,7 +12,7 @@ const FilterField = ({filterValue, setFilterValue, children}) => {
           id="outlined-basic"
           size="small"
           fullWidth
-          placeholder="Filter"
+          placeholder={label}
           value={filterValue}
           onChange={e => setFilterValue(e.target.value || "")}
           color={filterValue ? "error" : ""}

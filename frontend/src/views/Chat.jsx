@@ -26,17 +26,20 @@ const Post = ({data, user}) => {
       <div className={own ? styles.ownPostContent : styles.postContent}>
         <Typography>{data.data}</Typography>
       </div>
-      <div className={styles.postInfo}>
-        {
-          own ? null :
-            <Typography variant="subtitle2" color="lightgrey">
-              {data.author}
-            </Typography>
-        }
-        <Typography variant="subtitle2" color="grey">
-          {timeAgo} {timeUnit} ago
-        </Typography>
-      </div>
+      {!data.merge ?
+        <div className={styles.postInfo}>
+          {
+            own ? null :
+              <Typography variant="subtitle2" color="lightgrey">
+                {data.author}
+              </Typography>
+          }
+          <Typography variant="subtitle2" color="grey">
+            {timeAgo} {timeUnit} ago
+          </Typography>
+        </div>
+        : null
+      }
     </div>
   );
 };
@@ -50,6 +53,10 @@ const Chat = () => {
     return Object.entries(posts)
       .filter(([,post]) => {
         return post.channel === selectedChannel;
+      })
+      .map((post, index, posts) => {
+        if (posts[index - 1]?.author === post.author) post.merge = true;
+        return post;
       })
       .sort(([,postA], [,postB]) => postA.created > postB.created ? 1 : -1);
   }, [posts, selectedChannel]);
@@ -65,6 +72,12 @@ const Chat = () => {
     setEditorValue("");
   };
 
+  const handleKeyDown = e => {
+    if (e.keyCode !== 13) return;
+    e.preventDefault();
+    handlePost();
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.postsList}>
@@ -73,7 +86,7 @@ const Chat = () => {
         ) : <DataPlaceholder text="No messages yet :(" />}
       </div>
       <div data-color-mode="dark" className={styles.editorContainer}>
-        <MDEditor height="100%" value={editorValue} onChange={setEditorValue} preview="edit" visibleDragbar={false} />
+        <MDEditor height="100%" value={editorValue} onChange={setEditorValue} preview="edit" visibleDragbar={false} textareaProps={{onKeyDown: handleKeyDown}} />
       </div>
       <div className={styles.buttonContainer}>
         <Button size="small" color="success" onClick={handlePost} disabled={!editorValue} variant="contained">

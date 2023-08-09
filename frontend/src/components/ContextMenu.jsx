@@ -1,86 +1,36 @@
-// Copyright 2023 Georgios Savvas
-
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-
-//     https://www.apache.org/licenses/LICENSE-2.0
-
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Typography } from "@mui/material";
+import React from "react";
 
-const style = {
-  display: "flex",
-  gap: "5px",
-  justifyContent: "center",
-  backgroundColor: "rgb(30, 30, 30)",
-  padding: "2px 5px",
-  marginBottom: "2px",
-};
-
-export interface ContextMenuType {
-  mouseX: number;
-  mouseY: number;
-  data: any;
-}
-
-type HandleContextMenuFn = (contextMenu: ContextMenuType | null) => void;
-
-export const handleContextMenu = (
-  e: React.MouseEvent<HTMLElement>,
-  contextMenu: ContextMenuType | null,
-  setContextMenu: (contextMenu: any) => void,
-  data?: any
-) => {
-  e.preventDefault();
-  e.stopPropagation();
+export function handleContextMenu(event, contextMenu, setContextMenu) {
+  event.preventDefault();
   setContextMenu(
     contextMenu === null
       ? {
-          mouseX: e.clientX - 2,
-          mouseY: e.clientY - 4,
-          data: data,
-        }
-      : null
+        mouseX: event.clientX - 2,
+        mouseY: event.clientY - 4,
+      }
+      : null,
   );
-};
-
-export interface ContextMenuProps {
-  contextMenu: ContextMenuType | null;
-  items: ContextMenuItem[];
-  title?: string;
-  subtitle?: string;
-  setContextMenu: HandleContextMenuFn;
 }
 
-export interface ContextMenuItem {
-  divider?: boolean;
-  args?: any[];
-  disabled?: boolean;
-  fn: (args?: any[]) => void;
-  label: string;
-}
+function ContextMenu(props) {
+  // const [contextMenu, setContextMenu] = useState(null);
 
-export const ContextMenu = (props: ContextMenuProps) => {
   const handleClose = () => {
     props.setContextMenu(null);
   };
 
-  const formatItem = (item: ContextMenuItem, index: number) => {
-    return (
+  function formatItem(item, index) {
+    // if (item.type === "divider") return <Divider />
+    if (!item.fn) item.fn = () => {return;};
+    if (!item.args) item.args = [];
+    return(
       <MenuItem
         key={index}
-        onClick={(e) => {
+        onClick={e => {
           e.stopPropagation();
-          if (item.fn && item.args?.length) item.fn(...item.args);
-          else if (item.fn) item.fn();
+          item.fn(...item.args);
           handleClose();
         }}
         divider={item.divider || false}
@@ -88,18 +38,19 @@ export const ContextMenu = (props: ContextMenuProps) => {
         style={{
           paddingTop: "2px",
           paddingBottom: "2px",
-          fontSize: "0.8rem",
+          fontSize: "0.8rem"
         }}
       >
         {item.label}
       </MenuItem>
     );
-  };
+  }
+
   return (
     <Menu
       open={props.contextMenu !== null}
       onClose={handleClose}
-      MenuListProps={{ style: { padding: 0, paddingBottom: "4px" } }}
+      MenuListProps={{style: {padding: "4px 0"}}}
       anchorReference="anchorPosition"
       anchorPosition={
         props.contextMenu !== null
@@ -107,13 +58,9 @@ export const ContextMenu = (props: ContextMenuProps) => {
           : undefined
       }
     >
-      <div style={style}>
-        {props.title ? <Typography>{props.title}</Typography> : null}
-        {props.subtitle ? <Typography color="darkgrey">({props.subtitle})</Typography> : null}
-      </div>
       {props.items.map((item, index) => formatItem(item, index))}
     </Menu>
   );
-};
+}
 
 export default ContextMenu;

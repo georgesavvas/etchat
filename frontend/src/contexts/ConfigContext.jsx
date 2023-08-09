@@ -1,6 +1,8 @@
 import React, {createContext, useEffect, useRef, useState} from "react";
 
+import loadFromLS from "../utils/loadFromLS";
 import {longSocket} from "../services/serverWebSocket";
+import saveToLS from "../utils/saveToLS";
 import serverRequest from "../services/serverRequest";
 import {v4 as uuid} from "uuid";
 
@@ -50,6 +52,8 @@ export const ConfigProvider = props => {
       if (!resp) return;
       setPosts(resp.data);
     });
+    const previouslySelectedChannel = loadFromLS("selectedChannel");
+    if (previouslySelectedChannel) setSelectedChannel(previouslySelectedChannel);
     if (chatsSocket.current) return;
     const websocketConfig = {
       timeout: 5000,
@@ -68,11 +72,16 @@ export const ConfigProvider = props => {
     return (() => destroySocket(chatsSocket));
   }, []);
 
+  const onChannelSelect = value => {
+    setSelectedChannel(value);
+    saveToLS("selectedChannel", value);
+  };
+
   return (
     <ConfigContext.Provider value={{
       channels: channels,
       selectedChannel: selectedChannel,
-      setSelectedChannel: setSelectedChannel,
+      setSelectedChannel: onChannelSelect,
       posts: posts,
       user: user,
     }}>

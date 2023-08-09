@@ -6,7 +6,8 @@ import asyncio
 import yaml
 
 
-PATH = Path("/tmp/nda_chat")
+# PATH = Path("/tmp/nda_chat")
+PATH = Path(r"C:\Users\George\AppData\Local\Temp\etchat")
 PATH.mkdir(exist_ok=True)
 CHANNELS = PATH / "channels.yml"
 POSTS = PATH / "posts.yml"

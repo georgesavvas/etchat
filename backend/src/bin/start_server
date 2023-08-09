@@ -3,5 +3,5 @@
 # SCRIPT_DIR=$( cd -- "${ dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # cd $SCRIPT_DIR/../python;
-python3 -m nda_chat.main
-# gunicorn nda_chat.main:app --workers ${1:-1} --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8080
+python3 -m etchat.main
+# gunicorn etchat.main:app --workers ${1:-1} --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8080

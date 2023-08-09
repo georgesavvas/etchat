@@ -1,11 +1,13 @@
-import { Divider, Typography } from "@mui/material";
+import { Divider, IconButton, TextField, Typography } from "@mui/material";
 import React, {useContext, useEffect, useState} from "react";
-// import serverRequest from "../services/serverRequest";
 import {ReflexContainer, ReflexElement, ReflexSplitter} from "react-reflex";
 
 import Channels from "./Channels";
 import Chat from "./Chat";
-import {ConfigContext} from "../contexts/ConfigContext";
+import FilterField from "../components/FilterField";
+import Modal from "../components/Modal";
+import Settings from "./Settings";
+import SettingsIcon from "@mui/icons-material/Settings";
 import loadReflexLayout from "../utils/loadReflexLayout";
 import saveReflexLayout from "../utils/saveReflexLayout";
 import styles from "./Home.module.css";
@@ -22,6 +24,8 @@ const defaultFlexRations = {
 
 export default function Home() {
   const [flexRatios, setFlexRatios] = useState(defaultFlexRations);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     const data = loadReflexLayout();
@@ -49,14 +53,24 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
+      <Settings open={settingsOpen} onClose={() => setSettingsOpen(false)} />
       <div className={styles.topBar}>
-        <div className={styles.topBarButtons} />
-        <Typography variant="h5" align="center">NDA Chat</Typography>
-        <div className={styles.topBarButtons}>
-
+        <div className={styles.topBarSection} />
+        {/* <Typography variant="h5" align="center">ET Chat</Typography> */}
+        <div className={styles.topBarSection}>
+          <FilterField
+            label="Search"
+            filterValue={searchValue}
+            setFilterValue={setSearchValue}
+          />
+        </div>
+        <div className={styles.topBarSection} style={{justifyContent: "flex-end"}}>
+          <IconButton size="small" onClick={() => setSettingsOpen(true)}>
+            <SettingsIcon sx={{fontSize: 25, color: "lightgrey"}} />
+          </IconButton>
         </div>
       </div>
-      <Divider sx={{m: "5px"}} />
+      <Divider sx={{m: "0 5px"}} />
       <ReflexContainer orientation="vertical" className={styles.viewport}>
         <ReflexElement flex={flexRatios["home.channels"]} name="home.channels"
           onStopResize={handleResized}

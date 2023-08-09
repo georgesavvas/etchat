@@ -1,6 +1,6 @@
 import fetch from "./fetch";
 
-const address = "0.0.0.0:8080";
+const address = "localhost:8080";
 
 async function serverRequest(method, data=undefined) {
   console.log("Server request:", address, method, data);
